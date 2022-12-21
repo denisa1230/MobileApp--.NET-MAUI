@@ -20,9 +20,10 @@
                 <span asp-validation-for="Bus.DepartureID" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Bus.Arrival" class="control-label"></label>
-                <input asp-for="Bus.Arrival" class="form-control" />
-                <span asp-validation-for="Bus.Arrival" class="text-danger"></span>
+                <label asp-for="Bus.ArrivalID" class="control-label">The Place Of Arrival</label>
+                <select asp-for="Bus.ArrivalID" class="form-control" asp-items="ViewBag.DepartureID">
+                </select>
+                <span asp-validation-for="Bus.ArrivalID" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Bus.ArrivalDates" class="control-label"></label>
@@ -39,6 +40,30 @@
                 <input asp-for="Bus.Price" class="form-control" />
                 <span asp-validation-for="Bus.Price" class="text-danger"></span>
             </div>
+           <div class="form-group">
+                   <div class="table">
+                          <table>
+                              <tr>
+                            @{
+                                int cnt = 0;
+                                
+                            foreach (var cat in Model.AssignedCategoryDataList)
+                             {
+                                if (cnt++ % 3 == 0)
+                                  {
+                           @:</tr><tr>
+                             }
+                           @:<td>
+                  <input type="checkbox" name="selectedCategories" value="@cat.CategoryID" @(Html.Raw(cat.Assigned ? "checked=\"checked\"" : "")) />
+                          @cat.CategoryID @: @cat.Name
+                           @:</td>
+                                   }
+                           @:</tr>
+                             }
+ </table>
+ </div>
+ </div>
+
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>

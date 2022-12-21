@@ -9,9 +9,11 @@ using Microsoft.EntityFrameworkCore;
 using Proiect.Data;
 using Proiect.Models;
 
+
+
 namespace Proiect.Pages.Buses
 {
-    public class EditModel : PageModel
+    public class EditModel : BusCategoriesPageModel
     {
         private readonly Proiect.Data.ProiectContext _context;
 
@@ -29,50 +31,61 @@ namespace Proiect.Pages.Buses
             {
                 return NotFound();
             }
-
+            Bus = await _context.Bus
+           .Include(b => b.Arrival)
+           .Include(b => b.Departure)
+           .Include(b => b.BusCategories).ThenInclude(b => b.Category)
+           .AsNoTracking()
+           .FirstOrDefaultAsync(m => m.ID == id);
             var bus =  await _context.Bus.FirstOrDefaultAsync(m => m.ID == id);
-            if (bus == null)
+
+            if (Bus == null)
             {
                 return NotFound();
             }
+
+            PopulateAssignedCategoryData(_context, Bus);
+
             Bus = bus;
             ViewData["DepartureID"] = new SelectList(_context.Set<Departure>(), "ID", "DepartureName");
+            ViewData["ArrivalID"] = new SelectList(_context.Set<Arrival>(), "ID", "ArrivalName");
             return Page();
         }
 
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see https://aka.ms/RazorPagesCRUD.
-        public async Task<IActionResult> OnPostAsync()
+        
+        public async Task<IActionResult>  OnPostAsync(int? id, string[] selectedCategories)
         {
-            if (!ModelState.IsValid)
+            if (id == null)
             {
-                return Page();
+                return NotFound();
             }
+           
+            var busToUpdate = await _context.Bus
 
-            _context.Attach(Bus).State = EntityState.Modified;
-
-            try
+            .Include(i => i.Arrival)
+            .Include(i => i.Departure)
+            .Include(i => i.BusCategories).ThenInclude(i => i.Category)
+            .FirstOrDefaultAsync(s => s.ID == id);
+            if (busToUpdate == null)
             {
+                return NotFound();
+            }
+           
+            if (await TryUpdateModelAsync<Bus>(
+            busToUpdate,
+            "Bus",
+            i => i.Departure, i => i.Arrival,
+            i => i.ArrivalDates, i => i.DepartureDates, i => i.Price))
+            {
+                UpdateBusCategories(_context, selectedCategories, busToUpdate);
                 await _context.SaveChangesAsync();
+                return RedirectToPage("./Index");
             }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!BusExists(Bus.ID))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return RedirectToPage("./Index");
-        }
-
-        private bool BusExists(int id)
-        {
-          return _context.Bus.Any(e => e.ID == id);
+           
+            UpdateBusCategories(_context, selectedCategories, busToUpdate);
+            PopulateAssignedCategoryData(_context, busToUpdate);
+            return Page();
         }
     }
 }
+

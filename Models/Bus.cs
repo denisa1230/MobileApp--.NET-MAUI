@@ -12,8 +12,9 @@ namespace Proiect.Models
         
         public int? DepartureID { get; set; }
         public Departure? Departure { get; set; }
-        [Display(Name = "The Place Of Arrival")]
-        public string Arrival { get; set; }
+
+        public int? ArrivalID { get; set; }
+        public Arrival? Arrival { get; set; }
 
         [Display(Name = "Arrival Date-Time")]
         [DataType(DataType.DateTime)]
@@ -28,7 +29,8 @@ namespace Proiect.Models
 
         [Column(TypeName = "decimal(6, 2)")]
         public decimal Price { get; set; }
+        public ICollection<BusCategory>? BusCategories { get; set; }
 
-        
+
     }
 }

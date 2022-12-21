@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Proiect.Data;
 
@@ -11,9 +12,10 @@ using Proiect.Data;
 namespace Proiect.Migrations
 {
     [DbContext(typeof(ProiectContext))]
-    partial class ProiectContextModelSnapshot : ModelSnapshot
+    [Migration("20221221193508_Arrival")]
+    partial class Arrival
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -71,46 +73,6 @@ namespace Proiect.Migrations
                     b.ToTable("Bus");
                 });
 
-            modelBuilder.Entity("Proiect.Models.BusCategory", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"), 1L, 1);
-
-                    b.Property<int>("BusID")
-                        .HasColumnType("int");
-
-                    b.Property<int>("CategoryID")
-                        .HasColumnType("int");
-
-                    b.HasKey("ID");
-
-                    b.HasIndex("BusID");
-
-                    b.HasIndex("CategoryID");
-
-                    b.ToTable("BusCategory");
-                });
-
-            modelBuilder.Entity("Proiect.Models.Category", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"), 1L, 1);
-
-                    b.Property<string>("CategoryName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("ID");
-
-                    b.ToTable("Category");
-                });
-
             modelBuilder.Entity("Proiect.Models.Departure", b =>
                 {
                     b.Property<int>("ID")
@@ -143,38 +105,9 @@ namespace Proiect.Migrations
                     b.Navigation("Departure");
                 });
 
-            modelBuilder.Entity("Proiect.Models.BusCategory", b =>
-                {
-                    b.HasOne("Proiect.Models.Bus", "Bus")
-                        .WithMany("BusCategories")
-                        .HasForeignKey("BusID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Proiect.Models.Category", "Category")
-                        .WithMany("BusCategories")
-                        .HasForeignKey("CategoryID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Bus");
-
-                    b.Navigation("Category");
-                });
-
             modelBuilder.Entity("Proiect.Models.Arrival", b =>
                 {
                     b.Navigation("Buses");
-                });
-
-            modelBuilder.Entity("Proiect.Models.Bus", b =>
-                {
-                    b.Navigation("BusCategories");
-                });
-
-            modelBuilder.Entity("Proiect.Models.Category", b =>
-                {
-                    b.Navigation("BusCategories");
                 });
 
             modelBuilder.Entity("Proiect.Models.Departure", b =>

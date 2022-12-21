@@ -1,4 +1,4 @@
-﻿@page
+﻿@page 
 @model Proiect.Pages.Buses.IndexModel
 
 @{
@@ -17,7 +17,7 @@
                 @Html.DisplayNameFor(model => model.Bus[0].Departure.DepartureName)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Bus[0].Arrival)
+                @Html.DisplayNameFor(model => model.Bus[0].Arrival.ArrivalName)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Bus[0].ArrivalDates)
@@ -28,17 +28,25 @@
             <th>
                 @Html.DisplayNameFor(model => model.Bus[0].Price)
             </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Bus[0].BusCategories)
+            </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model.Bus) {
-        <tr>
+@foreach (var item in Model.BusD.Buses) {
+            string selectedRow = "";
+            if (item.ID == Model.BusID)
+            {
+                selectedRow = "table-success";
+            }
+            <tr class="@selectedRow">
             <td>
                 @Html.DisplayFor(modelItem => item.Departure.DepartureName)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Arrival)
+                @Html.DisplayFor(modelItem => item.Arrival.ArrivalName)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.ArrivalDates)
@@ -49,6 +57,9 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Price)
             </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.BusCategories)
+                </td>
             <td>
                 <a asp-page="./Edit" asp-route-id="@item.ID">Edit</a> |
                 <a asp-page="./Details" asp-route-id="@item.ID">Details</a> |

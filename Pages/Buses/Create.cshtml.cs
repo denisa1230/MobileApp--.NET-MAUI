@@ -6,12 +6,13 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using Proiect.Data;
 using Proiect.Models;
 
 namespace Proiect.Pages.Buses
 {
-    public class CreateModel : PageModel
+    public class CreateModel : BusCategoriesPageModel
     {
         private readonly Proiect.Data.ProiectContext _context;
 
@@ -23,26 +24,44 @@ namespace Proiect.Pages.Buses
         public IActionResult OnGet()
         {
             ViewData["DepartureID"] = new SelectList(_context.Set<Departure>(), "ID", "DepartureName");
+            ViewData["ArrivalID"] = new SelectList(_context.Set<Arrival>(), "ID", "ArrivalName");
             return Page();
 
+            var bus = new Bus();
+            bus.BusCategories = new List<BusCategory>();
+            PopulateAssignedCategoryData(_context, bus);
         }
+        
 
         [BindProperty]
         public Bus Bus { get; set; }
-        
 
-        // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
-        public async Task<IActionResult> OnPostAsync()
+
+      
+        public async Task<IActionResult> OnPostAsync(string[] selectedCategories)
         {
-          if (!ModelState.IsValid)
+            var newBus = new Bus();
+            if (selectedCategories != null)
             {
-                return Page();
+                newBus.BusCategories = new List<BusCategory>();
+                foreach (var cat in selectedCategories)
+                {
+                    var catToAdd = new BusCategory
+                    {
+                        CategoryID = int.Parse(cat)
+                    };
+                    newBus.BusCategories.Add(catToAdd);
+                }
             }
-
+            Bus.BusCategories = newBus.BusCategories;
             _context.Bus.Add(Bus);
             await _context.SaveChangesAsync();
-
             return RedirectToPage("./Index");
+            PopulateAssignedCategoryData(_context, newBus);
+            return Page();
         }
     }
+        
 }
+
+

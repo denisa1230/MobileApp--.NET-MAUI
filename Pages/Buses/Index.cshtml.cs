@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -20,15 +21,29 @@ namespace Proiect.Pages.Buses
         }
 
         public IList<Bus> Bus { get;set; } = default!;
+        public BusData BusD { get; set; }
+        public int BusID { get; set; }
+        public int CategoryID { get; set; }
 
-        public async Task OnGetAsync()
+        public async Task OnGetAsync(int? id, int? categoryID)
         {
-            if (_context.Bus != null)
+            BusD = new BusData();
+
+            BusD.Buses = await _context.Bus
+            .Include(b => b.Arrival)
+            .Include(b => b.Departure)
+            .Include(b => b.BusCategories)
+            .ThenInclude(b => b.Category)
+            .AsNoTracking()
+            .ToListAsync();
+            if (id != null)
             {
-                Bus = await _context.Bus
-                    .Include(b => b.Departure)
-                    .ToListAsync();
+                BusID = id.Value;
+                Bus bus = BusD.Buses
+                .Where(i => i.ID == id.Value).Single();
+                BusD.Categories = bus.BusCategories.Select(s => s.Category);
             }
         }
+
     }
 }

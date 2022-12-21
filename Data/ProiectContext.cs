@@ -17,5 +17,9 @@ namespace Proiect.Data
         public DbSet<Proiect.Models.Bus> Bus { get; set; } = default!;
 
         public DbSet<Proiect.Models.Departure> Departure { get; set; }
+
+        public DbSet<Proiect.Models.Arrival> Arrival { get; set; }
+
+        public DbSet<Proiect.Models.Category> Category { get; set; }
     }
 }
