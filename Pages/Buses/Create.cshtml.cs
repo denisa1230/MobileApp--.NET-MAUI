@@ -25,11 +25,12 @@ namespace Proiect.Pages.Buses
         {
             ViewData["DepartureID"] = new SelectList(_context.Set<Departure>(), "ID", "DepartureName");
             ViewData["ArrivalID"] = new SelectList(_context.Set<Arrival>(), "ID", "ArrivalName");
-            return Page();
+           
 
             var bus = new Bus();
             bus.BusCategories = new List<BusCategory>();
             PopulateAssignedCategoryData(_context, bus);
+            return Page();
         }
         
 

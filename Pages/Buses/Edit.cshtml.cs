@@ -27,17 +27,19 @@ namespace Proiect.Pages.Buses
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
-            if (id == null || _context.Bus == null)
+            if (id == null )
             {
                 return NotFound();
             }
+
             Bus = await _context.Bus
            .Include(b => b.Arrival)
            .Include(b => b.Departure)
            .Include(b => b.BusCategories).ThenInclude(b => b.Category)
            .AsNoTracking()
            .FirstOrDefaultAsync(m => m.ID == id);
-            var bus =  await _context.Bus.FirstOrDefaultAsync(m => m.ID == id);
+
+            
 
             if (Bus == null)
             {
@@ -46,7 +48,7 @@ namespace Proiect.Pages.Buses
 
             PopulateAssignedCategoryData(_context, Bus);
 
-            Bus = bus;
+         
             ViewData["DepartureID"] = new SelectList(_context.Set<Departure>(), "ID", "DepartureName");
             ViewData["ArrivalID"] = new SelectList(_context.Set<Arrival>(), "ID", "ArrivalName");
             return Page();
@@ -66,6 +68,7 @@ namespace Proiect.Pages.Buses
             .Include(i => i.Departure)
             .Include(i => i.BusCategories).ThenInclude(i => i.Category)
             .FirstOrDefaultAsync(s => s.ID == id);
+
             if (busToUpdate == null)
             {
                 return NotFound();
