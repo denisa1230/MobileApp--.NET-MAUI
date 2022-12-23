@@ -9,8 +9,9 @@ namespace Proiect.Models
     public class Bus
     {
         public int ID { get; set; }
-        
 
+
+        public string Name { get; set; }
         [Display(Name = "Arrival Date-Time")]
         [DataType(DataType.DateTime)]
         public DateTime ArrivalDates { get; set; }

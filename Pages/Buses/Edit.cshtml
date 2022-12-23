@@ -22,9 +22,14 @@
             </div>
             <div class="form-group">
                 <label asp-for="Bus.ArrivalID" class="control-label">The Place Of Arrival</label>
-                <select asp-for="Bus.ArrivalID" class="form-control" asp-items="ViewBag.DepartureID">
+                <select asp-for="Bus.ArrivalID" class="form-control" asp-items="ViewBag.ArrivalID">
                 </select>
                 <span asp-validation-for="Bus.ArrivalID" class="text-danger"></span>
+            </div>
+             <div class="form-group">
+                <label asp-for="Bus.Name" class="control-label">Name</label>
+                <input asp-for="Bus.Name" class="form-control" />
+                <span asp-validation-for="Bus.Name" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Bus.ArrivalDates" class="control-label"></label>

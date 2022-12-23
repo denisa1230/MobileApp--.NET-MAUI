@@ -20,14 +20,16 @@ namespace Proiect.Pages.Buses
             _context = context;
         }
 
-        public IList<Bus> Bus { get;set; } = default!;
+        public IList<Bus> Bus { get; set; } = default!;
         public BusData BusD { get; set; }
         public int BusID { get; set; }
         public int CategoryID { get; set; }
-
-        public async Task OnGetAsync(int? id, int? categoryID)
+        public string NameSort { get; set; }
+        public string CurrentFilter { get; set; }
+        public async Task OnGetAsync(int? id, int? categoryID, string sortOrder, string searchString)
         {
             BusD = new BusData();
+            NameSort = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
 
             BusD.Buses = await _context.Bus
             .Include(b => b.Arrival)
@@ -36,14 +38,31 @@ namespace Proiect.Pages.Buses
             .ThenInclude(b => b.Category)
             .AsNoTracking()
             .ToListAsync();
-            if (id != null)
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                BusD.Buses = BusD.Buses.Where(s => s.Name.Contains(searchString)
+
+               || s.Name.Contains(searchString));
+            }
+
+                if (id != null)
             {
                 BusID = id.Value;
                 Bus bus = BusD.Buses
                 .Where(i => i.ID == id.Value).Single();
                 BusD.Categories = bus.BusCategories.Select(s => s.Category);
             }
-        }
+            switch (sortOrder)
+            {
+                case "name_desc":
+                    BusD.Buses = BusD.Buses.OrderByDescending(s =>
+                   s.Name);
+                    break;
 
+
+            }
+
+        }
     }
 }

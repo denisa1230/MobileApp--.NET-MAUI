@@ -1,4 +1,4 @@
-﻿@page
+﻿@page "{id:int?}"
 @model Proiect.Pages.Departures.IndexModel
 
 @{
@@ -20,12 +20,22 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model.Departure) {
-        <tr>
+
+        @foreach (var item in Model.DepartureData.Departures)
+     {
+               string selectedRow = "";
+            if (item.ID == Model.DepartureID)
+              {
+                    selectedRow = "table-success";
+              }
+            <tr class="@selectedRow">
+ 
+       
             <td>
                 @Html.DisplayFor(modelItem => item.DepartureName)
             </td>
             <td>
+                    <a asp-page="./Index" asp-route-id="@item.ID">Select</a> |
                 <a asp-page="./Edit" asp-route-id="@item.ID">Edit</a> |
                 <a asp-page="./Details" asp-route-id="@item.ID">Details</a> |
                 <a asp-page="./Delete" asp-route-id="@item.ID">Delete</a>
@@ -34,3 +44,33 @@
 }
     </tbody>
 </table>
+@if (Model.DepartureData.Buses != null)
+{
+    <h3>Bus departure times from the station according to the city</h3>
+    <table class="table">
+
+        @foreach (var item in Model.DepartureData.Departures)
+        {
+            string selectedRow = "";
+            if (item.ID == Model.DepartureID)
+            {
+                selectedRow = "table-success";
+            }
+            <tr class="@selectedRow">
+
+                <td>
+                    @{
+                        foreach (var b in item.Buses)
+                        {
+
+                            @b.DepartureDates
+
+                            <br />
+                        }
+                    }
+                </td>
+            </tr>
+        }
+    </table>
+}
+

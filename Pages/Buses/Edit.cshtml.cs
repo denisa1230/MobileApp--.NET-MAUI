@@ -77,7 +77,8 @@ namespace Proiect.Pages.Buses
             if (await TryUpdateModelAsync<Bus>(
             busToUpdate,
             "Bus",
-            i => i.Departure, i => i.Arrival,
+           
+            i => i.Departure, i => i.Arrival, i => i.Name,
             i => i.ArrivalDates, i => i.DepartureDates, i => i.Price))
             {
                 UpdateBusCategories(_context, selectedCategories, busToUpdate);
