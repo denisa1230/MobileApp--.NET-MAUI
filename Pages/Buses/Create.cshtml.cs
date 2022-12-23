@@ -23,6 +23,7 @@ namespace Proiect.Pages.Buses
 
         public IActionResult OnGet()
         {
+           
             ViewData["DepartureID"] = new SelectList(_context.Set<Departure>(), "ID", "DepartureName");
             ViewData["ArrivalID"] = new SelectList(_context.Set<Arrival>(), "ID", "ArrivalName");
            

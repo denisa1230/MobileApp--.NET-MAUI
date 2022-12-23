@@ -21,5 +21,9 @@ namespace Proiect.Data
         public DbSet<Proiect.Models.Arrival> Arrival { get; set; }
 
         public DbSet<Proiect.Models.Category> Category { get; set; }
+
+        public DbSet<Proiect.Models.Member> Member { get; set; }
+
+        public DbSet<Proiect.Models.Reservation> Reservation { get; set; }
     }
 }

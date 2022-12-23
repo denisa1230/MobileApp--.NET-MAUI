@@ -132,6 +132,61 @@ namespace Proiect.Migrations
                     b.ToTable("Departure");
                 });
 
+            modelBuilder.Entity("Proiect.Models.Member", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"), 1L, 1);
+
+                    b.Property<string>("Adress")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FirstName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LastName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Phone")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ID");
+
+                    b.ToTable("Member");
+                });
+
+            modelBuilder.Entity("Proiect.Models.Reservation", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"), 1L, 1);
+
+                    b.Property<int?>("BusID")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("DepartureDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("MemberID")
+                        .HasColumnType("int");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("BusID");
+
+                    b.HasIndex("MemberID");
+
+                    b.ToTable("Reservation");
+                });
+
             modelBuilder.Entity("Proiect.Models.Bus", b =>
                 {
                     b.HasOne("Proiect.Models.Arrival", "Arrival")
@@ -166,6 +221,21 @@ namespace Proiect.Migrations
                     b.Navigation("Category");
                 });
 
+            modelBuilder.Entity("Proiect.Models.Reservation", b =>
+                {
+                    b.HasOne("Proiect.Models.Bus", "Bus")
+                        .WithMany()
+                        .HasForeignKey("BusID");
+
+                    b.HasOne("Proiect.Models.Member", "Member")
+                        .WithMany("Reservations")
+                        .HasForeignKey("MemberID");
+
+                    b.Navigation("Bus");
+
+                    b.Navigation("Member");
+                });
+
             modelBuilder.Entity("Proiect.Models.Arrival", b =>
                 {
                     b.Navigation("Buses");
@@ -184,6 +254,11 @@ namespace Proiect.Migrations
             modelBuilder.Entity("Proiect.Models.Departure", b =>
                 {
                     b.Navigation("Buses");
+                });
+
+            modelBuilder.Entity("Proiect.Models.Member", b =>
+                {
+                    b.Navigation("Reservations");
                 });
 #pragma warning restore 612, 618
         }
