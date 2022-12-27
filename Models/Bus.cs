@@ -12,6 +12,7 @@ namespace Proiect.Models
 
 
         public string Name { get; set; }
+        
         [Display(Name = "Arrival Date-Time")]
         [DataType(DataType.DateTime)]
         public DateTime ArrivalDates { get; set; }
@@ -30,6 +31,7 @@ namespace Proiect.Models
 
         public int? ArrivalID { get; set; }
         public Arrival? Arrival { get; set; }
+       
         public ICollection<BusCategory>? BusCategories { get; set; }
 
 
