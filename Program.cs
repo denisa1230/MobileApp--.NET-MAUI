@@ -18,6 +18,18 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options =>
     options.SignIn.RequireConfirmedAccount = true)
     .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<LibraryIdentityContext>();
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("AdminPolicy", policy =>
+   policy.RequireRole("Admin"));
+});
+builder.Services.AddRazorPages(options =>
+{
+    options.Conventions.AuthorizeFolder("/Buses");
+    options.Conventions.AllowAnonymousToPage("/Buses/Index");
+    options.Conventions.AllowAnonymousToPage("/Buses/Details");
+    options.Conventions.AuthorizeFolder("/Members", "AdminPolicy");
+});
 
 
 var app = builder.Build();

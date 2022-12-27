@@ -25,6 +25,8 @@ namespace Proiect.Models
         [Display(Name = "The Price Of The Trip")]
 
         [Column(TypeName = "decimal(6, 2)")]
+        [Range(0.01, 500)]
+
         public decimal Price { get; set; }
         public int? DepartureID { get; set; }
         public Departure? Departure { get; set; }
