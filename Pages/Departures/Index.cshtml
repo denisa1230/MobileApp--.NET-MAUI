@@ -5,7 +5,6 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
 
 <p>
     <a asp-page="Create">Create New</a>
@@ -26,7 +25,7 @@
                string selectedRow = "";
             if (item.ID == Model.DepartureID)
               {
-                    selectedRow = "table-success";
+                selectedRow = "table-success";
               }
             <tr class="@selectedRow">
  
