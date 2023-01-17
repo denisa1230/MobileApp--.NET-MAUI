@@ -14,5 +14,6 @@ html {
 }
 
 body {
+    background-image:image('b.jpg');
   margin-bottom: 60px;
 }
